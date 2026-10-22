@@ -65,9 +65,18 @@ Ventaja del cambio: el modelo puede crecer (prioridad, fecha, responsable) sin a
 
 Documenta al menos una iteración:
 
+    MISIÓN 02
 - **RED:** ¿qué prueba escribiste y por qué falló?
+
+    Escribimos la prueba "crearTarea" para proteger que una tarea nueva siempre se cree con el id y título recibidos y en estado pendiente, fallo porque aun no esta implementada la función y contenía un throw new Error que interrumpió la ejecución antes de que la prueba pudiera comparar el resultado.
+
 - **GREEN:** ¿cuál fue el cambio mínimo que la hizo pasar?
+    Solamente agregamos la linea para devolver valores return { id, titulo, completada: false }; en vez de la linea de throw
+
 - **REFACTOR:** ¿qué mejoraste sin cambiar el comportamiento?
+    La sintaxis ya que el nombre de la variable y el valor esperado era el mismo asi que solo lo dejamos indicado una vez, no era necesario duplicarlo. 
 
 ## Pair Programming
+**Roles misión 0:** Driver: Thalia · Navigator: Sugey
 **Roles misión 1:** Driver: Sugey · Navigator: Thalia
+**Roles misión 2:** Driver: Thalia · Navigator: Sugey
