@@ -46,6 +46,15 @@ Con esta construcción no se puede probar el recorrido de las tareas de forma un
 
 Que se muestren todas las tareas, tambien que se respete el orden en el que estan. Esto creemos se debe conservar porque es importante para identificar el orden original en el que se agregaron.
 
+## Misión 1: De string a objeto
+
+Ahora cada tarea es un objeto con `id`, `titulo` y `completada`.
+
+- **Dominio (pertenece a la tarea):** `id`, `titulo`, `completada`. Describen qué es la tarea y en qué estado está.
+- **Interfaz (no pertenece a la tarea):** si está seleccionada, si se está editando, el color o estilo con que se muestra. Dependen de cómo se presenta, no de qué es la tarea.
+
+Ventaja del cambio: el modelo puede crecer (prioridad, fecha, responsable) sin arrays paralelos ni variables dispersas.
+
 ### Tres comportamientos observables que NO deben cambiar
 
 1. Que las tareas se muestren en el orden en el que fueron agregadas.
@@ -61,5 +70,4 @@ Documenta al menos una iteración:
 - **REFACTOR:** ¿qué mejoraste sin cambiar el comportamiento?
 
 ## Pair Programming
-
-Registra por misión quién fue **Driver** y quién **Navigator**. Intercambien roles con frecuencia y no hagan commit hasta que ambos puedan explicar el código y la prueba.
+**Roles misión 1:** Driver: Sugey · Navigator: Thalia
