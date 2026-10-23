@@ -55,6 +55,15 @@ Ahora cada tarea es un objeto con `id`, `titulo` y `completada`.
 
 Ventaja del cambio: el modelo puede crecer (prioridad, fecha, responsable) sin arrays paralelos ni variables dispersas.
 
+## Misión 3: agregarTarea
+
+- `agregarTarea(tareas, nuevaTarea)` recibe la colección y devuelve una colección nueva con la tarea al final.
+- Usa spread (`[...tareas, nuevaTarea]`) en lugar de `push` para no modificar el array original.
+- Pruebas: caso normal, un elemento más y "no modifica el original".
+- Si modificara el array recibido, la prueba de "no modifica el original" fallaría.
+
+
+
 ### Tres comportamientos observables que NO deben cambiar
 
 1. Que las tareas se muestren en el orden en el que fueron agregadas.
@@ -80,3 +89,4 @@ Documenta al menos una iteración:
 **Roles misión 0:** Driver: Thalia · Navigator: Sugey
 **Roles misión 1:** Driver: Sugey · Navigator: Thalia
 **Roles misión 2:** Driver: Thalia · Navigator: Sugey
+**Roles mision 3:** Driver: Sugey · Navigator: Thalia
