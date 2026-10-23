@@ -62,6 +62,16 @@ Ventaja del cambio: el modelo puede crecer (prioridad, fecha, responsable) sin a
 - Pruebas: caso normal, un elemento más y "no modifica el original".
 - Si modificara el array recibido, la prueba de "no modifica el original" fallaría.
 
+## Misión 5: obtenerPendientes y obtenerTerminadas
+
+- Ambas usan `filter()` porque la intención es seleccionar un subconjunto sin transformar los elementos.
+- `obtenerPendientes` conserva las tareas con `completada === false`; `obtenerTerminadas`, las de `completada === true`.
+- Casos de prueba: colección mixta, ninguna coincidencia y colección vacía.
+- Cuando no hay coincidencias, `filter()` devuelve un arreglo vacío (`[]`), no `undefined`.
+- `filter()` devuelve un array nuevo, por eso la colección original no se modifica.
+
+                           
+
 
 
 ### Tres comportamientos observables que NO deben cambiar
@@ -91,6 +101,7 @@ Documenta al menos una iteración:
 **Roles misión 2:** Driver: Thalia · Navigator: Sugey
 **Roles mision 3:** Driver: Sugey · Navigator: Thalia
 **Roles mision 4:** Driver: Thalia· Navigator: Sugey
+**Roles mision 5:** Driver: Sugey · Navigator: Thalia
 
 ## Incidencias------------------------------
 ## Nota sobre la numeración de Pull Requests
