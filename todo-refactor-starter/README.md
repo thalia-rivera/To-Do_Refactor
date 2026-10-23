@@ -90,3 +90,43 @@ Documenta al menos una iteración:
 **Roles misión 1:** Driver: Sugey · Navigator: Thalia
 **Roles misión 2:** Driver: Thalia · Navigator: Sugey
 **Roles mision 3:** Driver: Sugey · Navigator: Thalia
+**Roles mision 4:** Driver: Thalia· Navigator: Sugey
+
+## Incidencias------------------------------
+## Nota sobre la numeración de Pull Requests
+
+Los números de los Pull Requests no coinciden con los números de las misiones.
+GitHub numera juntos todos los Pull Requests del repositorio en el orden en que
+se crean, y no reutiliza números, aunque el PR se borre o se corrija.
+
+| Pull Request | Misión |
+|---|---|
+| #1 | Misión 0 |
+| #2 | Misión 1 |
+| #3 | Misión 2 |
+| #4 | Misión 3 (incorrecto: se fusionó hacia `main`) |
+| #5 | Misión 3 (rehecho hacia `develop`) |
+
+### Qué pasó
+
+Al crear el PR de la Misión 3, la base quedó en `main` en lugar de `develop`
+(GitHub propone `main` por defecto). Como `feature/mision-3` salió de `develop`,
+el merge llevó a `main` todo el historial de las Misiones 0 a 3.
+
+### Cómo se corrigió
+
+1. Se creó una rama de respaldo (`respaldo-develop`) para no perder trabajo.
+2. Se regresaron `develop` (a la Misión 2) y `main` (a la estructura inicial)
+   con `git reset --hard` y `git push --force-with-lease`.
+3. Se rescató el commit de la Misión 3 con `git cherry-pick`, conservando sus
+   roles y el `Co-authored-by`.
+4. Se abrió un nuevo PR (#5) con base `develop`, y se fusionó correctamente.
+
+### Qué aprendimos
+
+- Antes de crear un PR hay que verificar siempre que la **base sea `develop`**.
+- Conviene crear una rama de respaldo antes de reescribir historia.
+- La rama principal debe recibir el trabajo solo al final del proyecto.
+- Por eso el PR de la Misión 4 es el #6, y así sucesivamente: el desfase es
+  consecuencia del PR #4 incorrecto y no afecta el historial de commits.
+
