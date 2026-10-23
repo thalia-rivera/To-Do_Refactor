@@ -9,13 +9,12 @@
 // MISIÓN 2
 export function crearTarea(id, titulo) {
   // TODO: devolver { id, titulo, completada: false }
-  throw new Error("Misión 2 pendiente: implementar crearTarea()");
+  return { id, titulo, completada: false };
 }
 
 // MISIÓN 3
 export function agregarTarea(tareas, nuevaTarea) {
-  // TODO: devolver una NUEVA colección que incluya nuevaTarea.
-  throw new Error("Misión 3 pendiente: implementar agregarTarea()");
+  return [...tareas, nuevaTarea];
 }
 
 // MISIÓN 4
