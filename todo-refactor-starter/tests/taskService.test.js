@@ -31,8 +31,54 @@ describe("crearTarea", () => {
   });
 });
 
+//AÑADÍ ESTO PARA HACER UNA PRUEBA
 
-// MISIÓN 3: agrega al menos dos pruebas para agregarTarea().
+
+describe("agregarTarea", () => {
+  it("devuelve la colección con la nueva tarea al final", () => {
+    // Arrange
+    const tareas = [{ id: 1, titulo: "Revisar requisitos", completada: false }];
+    const nueva = { id: 2, titulo: "Diseñar pruebas", completada: false };
+
+    // Act
+    const resultado = agregarTarea(tareas, nueva);
+
+    // Assert
+    expect(resultado).toEqual([
+      { id: 1, titulo: "Revisar requisitos", completada: false },
+      { id: 2, titulo: "Diseñar pruebas", completada: false }
+    ]);
+  });
+
+  it("devuelve una colección con un elemento más", () => {
+    // Arrange
+    const tareas = [
+      { id: 1, titulo: "Revisar requisitos", completada: false },
+      { id: 2, titulo: "Diseñar pruebas", completada: false }
+    ];
+    const nueva = { id: 3, titulo: "Refactorizar código", completada: false };
+
+    // Act
+    const resultado = agregarTarea(tareas, nueva);
+
+    // Assert
+    expect(resultado).toHaveLength(tareas.length + 1);
+  });
+
+  it("no modifica el array original", () => {
+    // Arrange
+    const tareas = [{ id: 1, titulo: "Revisar requisitos", completada: false }];
+    const nueva = { id: 2, titulo: "Diseñar pruebas", completada: false };
+
+    // Act
+    agregarTarea(tareas, nueva);
+
+    // Assert
+    expect(tareas).toHaveLength(1);
+  });
+});
+
+
 // MISIÓN 4: prueba id existente e inexistente para buscarTarea().
 // MISIÓN 5: prueba colección mixta, sin coincidencias y vacía.
 // MISIÓN 6: prueba cambio correcto, otra tarea intacta e id inexistente.
@@ -40,7 +86,6 @@ describe("crearTarea", () => {
 // MISIÓN 8: prueba obtenerResumen(), incluyendo colección vacía.
 
 // Los imports anteriores quedan preparados para que construyas la suite de forma incremental.
-void agregarTarea;
 void buscarTarea;
 void obtenerPendientes;
 void obtenerTerminadas;
