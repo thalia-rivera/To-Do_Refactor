@@ -104,14 +104,113 @@ describe("buscarTarea", () => {
 });
 
 // MISIÓN 5: prueba colección mixta, sin coincidencias y vacía.
+    describe("obtenerPendientes", () => {
+  it("devuelve solo las tareas pendientes en una colección mixta", () => {
+    // Arrange
+    const tareas = [
+      { id: 1, titulo: "Revisar requisitos", completada: true },
+      { id: 2, titulo: "Diseñar pruebas", completada: false },
+      { id: 3, titulo: "Refactorizar código", completada: false }
+    ];
+
+    // Act
+    const resultado = obtenerPendientes(tareas);
+
+    // Assert
+    expect(resultado).toEqual([
+      { id: 2, titulo: "Diseñar pruebas", completada: false },
+      { id: 3, titulo: "Refactorizar código", completada: false }
+    ]);
+  });
+
+  it("devuelve un arreglo vacío si ninguna está pendiente", () => {
+    // Arrange
+    const tareas = [
+      { id: 1, titulo: "Revisar requisitos", completada: true }
+    ];
+
+    // Act
+    const resultado = obtenerPendientes(tareas);
+
+    // Assert
+    expect(resultado).toEqual([]);
+  });
+
+  it("devuelve un arreglo vacío si la colección está vacía", () => {
+    // Arrange
+    const tareas = [];
+
+    // Act
+    const resultado = obtenerPendientes(tareas);
+
+    // Assert
+    expect(resultado).toEqual([]);
+  });
+});
+
+describe("obtenerTerminadas", () => {
+  it("devuelve solo las tareas terminadas en una colección mixta", () => {
+    // Arrange
+    const tareas = [
+      { id: 1, titulo: "Revisar requisitos", completada: true },
+      { id: 2, titulo: "Diseñar pruebas", completada: false },
+      { id: 3, titulo: "Refactorizar código", completada: true }
+    ];
+
+    // Act
+    const resultado = obtenerTerminadas(tareas);
+
+    // Assert
+    expect(resultado).toEqual([
+      { id: 1, titulo: "Revisar requisitos", completada: true },
+      { id: 3, titulo: "Refactorizar código", completada: true }
+    ]);
+  });
+
+  it("devuelve un arreglo vacío si ninguna está terminada", () => {
+    // Arrange
+    const tareas = [
+      { id: 1, titulo: "Revisar requisitos", completada: false }
+    ];
+
+    // Act
+    const resultado = obtenerTerminadas(tareas);
+
+    // Assert
+    expect(resultado).toEqual([]);
+  });
+
+  it("devuelve un arreglo vacío si la colección está vacía", () => {
+    // Arrange
+    const tareas = [];
+
+    // Act
+    const resultado = obtenerTerminadas(tareas);
+
+    // Assert
+    expect(resultado).toEqual([]);
+  });
+
+  it("no modifica la colección original", () => {
+    // Arrange
+    const tareas = [
+      { id: 1, titulo: "Revisar requisitos", completada: true },
+      { id: 2, titulo: "Diseñar pruebas", completada: false }
+    ];
+
+    // Act
+    obtenerTerminadas(tareas);
+
+    // Assert
+    expect(tareas).toHaveLength(2);
+  });
+}); 
 // MISIÓN 6: prueba cambio correcto, otra tarea intacta e id inexistente.
 // MISIÓN 7: prueba eliminar existente, inexistente y colección vacía.
 // MISIÓN 8: prueba obtenerResumen(), incluyendo colección vacía.
 
 // Los imports anteriores quedan preparados para que construyas la suite de forma incremental.
-void buscarTarea;
-void obtenerPendientes;
-void obtenerTerminadas;
+void buscarTarea;                                                                                  
 void cambiarEstado;
 void eliminarTarea;
 void obtenerResumen;
