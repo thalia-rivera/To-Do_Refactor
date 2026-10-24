@@ -78,6 +78,23 @@ Ventaja del cambio: el modelo puede crecer (prioridad, fecha, responsable) sin a
   - Hace más trabajo (recorre la colección dos veces), pero para una lista de tareas el costo es insignificante.
 - Versión alternativa: calcula directamente con un solo `filter()`. Es más eficiente, pero duplica la regla de qué es una tarea terminada.
 - Casos de prueba: colección mixta, vacía, todas pendientes y la invariante total = pendientes + terminadas.
+## Misión 9: integración con la interfaz
+
+- `app.js` actúa como adaptador: lee eventos, llama a funciones de `taskService.js`, reasigna el estado y llama a `render()`.
+- Se eliminaron `push`, `splice` y cualquier regla sobre tareas dentro de `app.js`.
+- El filtro se resuelve con un objeto que asocia cada vista con una función de dominio.
+- Eliminar y cambiar estado usan el `id` de la tarea, no su posición.
+- Esta misión no lleva pruebas Vitest; se verificó manualmente:
+
+| Escenario | Resultado |
+|---|---|
+| Alta válida | OK |
+| Alta inválida | OK |
+| Cambio de estado | OK |
+| Filtro | OK |
+| Eliminar | OK |
+
+
 
 
 
@@ -133,6 +150,7 @@ para asegurarnos que la prueba era correcta.
 **Roles mision 6:** Driver: Thalia· Navigator: Sugey
 **Roles mision 7:** Driver: Thalia· Navigator: Sugey
 **Roles mision 8:** Driver: Sugey · Navigator: Thalia
+**Roles mision 9:** Driver: Sugey · Navigator: Thalia
 
 ## Incidencias------------------------------
 ## Nota sobre la numeración de Pull Requests
