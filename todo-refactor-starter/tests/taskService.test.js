@@ -277,9 +277,67 @@ describe("eliminarTarea", () => {
 });
 
 // MISIÓN 8: prueba obtenerResumen(), incluyendo colección vacía.
+describe("obtenerResumen", () => {
+  it("cuenta total, pendientes y terminadas en una colección mixta", () => {
+    // Arrange
+    const tareas = [
+      { id: 1, titulo: "Revisar requisitos", completada: true },
+      { id: 2, titulo: "Diseñar pruebas", completada: false },
+      { id: 3, titulo: "Refactorizar código", completada: false },
+      { id: 4, titulo: "Escribir README", completada: true },
+      { id: 5, titulo: "Hacer commit", completada: false }
+    ];
+
+    // Act
+    const resumen = obtenerResumen(tareas);
+
+    // Assert
+    expect(resumen).toEqual({ total: 5, pendientes: 3, terminadas: 2 });
+  });
+
+  it("devuelve ceros con una colección vacía", () => {
+    // Arrange
+    const tareas = [];
+
+    // Act
+    const resumen = obtenerResumen(tareas);
+
+    // Assert
+    expect(resumen).toEqual({ total: 0, pendientes: 0, terminadas: 0 });
+  });
+
+  it("cuenta todo como pendiente si ninguna está terminada", () => {
+    // Arrange
+    const tareas = [
+      { id: 1, titulo: "Revisar requisitos", completada: false },
+      { id: 2, titulo: "Diseñar pruebas", completada: false }
+    ];
+
+    // Act
+    const resumen = obtenerResumen(tareas);
+
+    // Assert
+    expect(resumen).toEqual({ total: 2, pendientes: 2, terminadas: 0 });
+  });
+
+  it("cumple que total = pendientes + terminadas", () => {
+    // Arrange
+    const tareas = [
+      { id: 1, titulo: "A", completada: true },
+      { id: 2, titulo: "B", completada: false },
+      { id: 3, titulo: "C", completada: true }
+    ];
+
+    // Act
+    const { total, pendientes, terminadas } = obtenerResumen(tareas);
+
+    // Assert
+    expect(total).toBe(pendientes + terminadas);
+  });
+});
 
 // Los imports anteriores quedan preparados para que construyas la suite de forma incremental.
-void buscarTarea;                                                                                  
+void buscarTarea;                                                                                                      
 void cambiarEstado;
 void eliminarTarea;
-void obtenerResumen;
+
