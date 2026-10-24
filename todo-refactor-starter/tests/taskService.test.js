@@ -205,8 +205,77 @@ describe("obtenerTerminadas", () => {
     expect(tareas).toHaveLength(2);
   });
 }); 
+
 // MISIÓN 6: prueba cambio correcto, otra tarea intacta e id inexistente.
+
+describe("cambiarEstado", () => {
+  it("cambia el estado de la tarea indicada", () => {
+    // Arrange
+    const tareas = [crearTarea(1, "Analizar requisitos"), crearTarea(2, "Diseñar pruebas")];
+
+    // Act
+    const resultado = cambiarEstado(tareas, 2);
+
+    // Assert
+    expect(resultado[1]).toEqual({ id: 2, titulo: "Diseñar pruebas", completada: true });
+  });
+
+  it("no altera las demás tareas", () => {
+    const tareas = [crearTarea(1, "Analizar requisitos"), crearTarea(2, "Diseñar pruebas")];
+
+    const resultado = cambiarEstado(tareas, 2);
+
+    expect(resultado[0]).toEqual({ id: 1, titulo: "Analizar requisitos", completada: false });
+  });
+
+  it("conserva el contenido si el id no existe", () => {
+    const tareas = [crearTarea(1, "Analizar requisitos"), crearTarea(2, "Diseñar pruebas")];
+
+    const resultado = cambiarEstado(tareas, 99);
+
+    expect(resultado).toEqual([
+      { id: 1, titulo: "Analizar requisitos", completada: false },
+      { id: 2, titulo: "Diseñar pruebas", completada: false }
+    ]);
+  });
+});
+
 // MISIÓN 7: prueba eliminar existente, inexistente y colección vacía.
+
+describe("eliminarTarea", () => {
+  it("elimina la tarea con un id existente", () => {
+    // Arrange
+    const tareas = [crearTarea(1, "Analizar requisitos"), crearTarea(2, "Diseñar pruebas"), crearTarea(3, "Ejecutar pruebas")];
+
+    // Act
+    const resultado = eliminarTarea(tareas, 2);
+
+    // Assert
+    expect(resultado).toEqual([
+      { id: 1, titulo: "Analizar requisitos", completada: false },
+      { id: 3, titulo: "Ejecutar pruebas", completada: false }
+    ]);
+  });
+
+  it("conserva todas las tareas si el id no existe", () => {
+    const tareas = [crearTarea(1, "Analizar requisitos"), crearTarea(2, "Diseñar pruebas")];
+
+    const resultado = eliminarTarea(tareas, 99);
+
+    expect(resultado).toEqual([
+      { id: 1, titulo: "Analizar requisitos", completada: false },
+      { id: 2, titulo: "Diseñar pruebas", completada: false }
+    ]);
+  });
+
+  it("devuelve una colección vacía si la colección está vacía", () => {
+    const resultado = eliminarTarea([], 1);
+
+    expect(resultado).toEqual([]);
+  });
+
+});
+
 // MISIÓN 8: prueba obtenerResumen(), incluyendo colección vacía.
 describe("obtenerResumen", () => {
   it("cuenta total, pendientes y terminadas en una colección mixta", () => {
