@@ -95,6 +95,23 @@ Documenta al menos una iteración:
 - **REFACTOR:** ¿qué mejoraste sin cambiar el comportamiento?
     La sintaxis ya que el nombre de la variable y el valor esperado era el mismo asi que solo lo dejamos indicado una vez, no era necesario duplicarlo. 
 
+    MISIÓN 07
+- **RED:** ¿qué prueba escribiste y por qué falló?
+Escribimos pruebas para `eliminarTarea`, entre ellas "elimina la tarea con un id existente", que espera que `eliminarTarea(tareas, 2)` devuelva solo las tareas 1 y 3. Falló porque la función aún contenía el throw new Error, que interrumpió la ejecución antes de que la prueba pudiera comparar el resultado.
+
+ **GREEN:** ¿cuál fue el cambio mínimo que la hizo pasar?
+
+ Reemplazamos el `throw` por un `filter()` que conserva todas las tareas excepto la del id indicado:
+    export function eliminarTarea(tareas, id) {
+         return tareas.filter(t => t.id !== id);
+        }
+Resultado: todas las pruebas en verde.
+
+ **REFACTOR:** ¿qué mejoraste sin cambiar el comportamiento?
+Para esta mision consideramos que no hacia falta refcatorizar algo, asi que lo dejamos asi, pero volvimos a probar 
+para asegurarnos que la prueba era correcta.
+    
+
 ## Pair Programming
 **Roles misión 0:** Driver: Thalia · Navigator: Sugey
 **Roles misión 1:** Driver: Sugey · Navigator: Thalia
@@ -102,6 +119,9 @@ Documenta al menos una iteración:
 **Roles mision 3:** Driver: Sugey · Navigator: Thalia
 **Roles mision 4:** Driver: Thalia· Navigator: Sugey
 **Roles mision 5:** Driver: Sugey · Navigator: Thalia
+**Roles mision 6:** Driver: Thalia· Navigator: Sugey
+**Roles mision 7:** Driver: Thalia· Navigator: Sugey
+
 
 ## Incidencias------------------------------
 ## Nota sobre la numeración de Pull Requests
