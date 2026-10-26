@@ -138,6 +138,68 @@ Resultado: todas las pruebas en verde.
  **REFACTOR:** ¿qué mejoraste sin cambiar el comportamiento?
 Para esta mision consideramos que no hacia falta refcatorizar algo, asi que lo dejamos asi, pero volvimos a probar 
 para asegurarnos que la prueba era correcta.
+
+    MISION 09
+## Misión 10: Refactor final protegido por pruebas
+
+Antes de empezar el refactor corrimos `npm test` y todas las pruebas estaban en verde. Los cambios de `taskService.js` los comprobamos con la suite después de cada modificación. Los de `app.js` los comprobamos a mano, porque la interfaz no está cubierta por Vitest.
+
+### Cambios en `taskService.js`
+
+| Problema que encontramos | Qué cambiamos | Evidencia |
+|---|---|---|
+| Había comentarios `TODO` que decían que faltaba trabajo que ya estaba hecho, y el encabezado hablaba de "completar las funciones misión por misión" | Quitamos los `TODO` y dejamos un encabezado que explica para qué sirve el archivo | `npm test` en verde |
+| El mismo concepto se llamaba `t` en unas funciones y `tarea` en otras | Lo dejamos como `tarea` en `buscarTarea`, `obtenerPendientes`, `obtenerTerminadas` y `eliminarTarea` | `npm test` en verde |
+| `obtenerResumen` repetía la regla de "terminada" y calculaba los pendientes restando (`total - terminadas`) | Ahora usa `obtenerPendientes()` y `obtenerTerminadas()` | `npm test` en verde |
+| `cambiarEstado` tenía la sangría desigual y espacios sobrantes | Le dimos el mismo formato que a las demás funciones | `npm test` en verde |
+
+El cambio más importante fue el de `obtenerResumen`:
+
+```js
+// Antes
+export function obtenerResumen(tareas) {
+  const terminadas = tareas.filter(t => t.completada).length;
+  return {
+    total: tareas.length,
+    pendientes: tareas.length - terminadas,
+    terminadas
+  };
+}
+
+// Después
+export function obtenerResumen(tareas) {
+  return {
+    total: tareas.length,
+    pendientes: obtenerPendientes(tareas).length,
+    terminadas: obtenerTerminadas(tareas).length
+  };
+}
+```
+
+Con este cambio la regla de qué es una tarea terminada queda escrita en un solo lugar, y reutilizamos funciones que ya tienen sus propias pruebas.
+
+### Cambios en `app.js`
+
+| Problema que encontramos | Qué cambiamos | Evidencia |
+|---|---|---|
+| El comentario del encabezado Lo reemplazamos por una descripción de lo que hace el archivo | La aplicación carga y funciona igual |
+| Las variables del DOM estaban en inglés (`form`, `input`, `list`, `message`, `summary`, `filterButtons`) y las del dominio en español | Las pasamos a español (`formulario`, `campoTitulo`, `lista`, `mensaje`, `resumen`, `botonesFiltro`) usando el renombrado de VS Code, sin tocar los selectores del HTML | Consola sin errores y cinco escenarios manuales correctos |
+| `button` y `b` nombraban el mismo tipo de objeto sin decir qué papel tenía cada uno | Los renombramos a `botonPulsado` y `boton` | Escenario de filtro probado a mano |
+| `toggle` y `eliminar` mezclaban idiomas y no dejaban claro que eran ids | Les pusimos alias: `idParaCambiar` e `idParaEliminar` | Completar, reabrir y eliminar probados a mano |
+| `li` y `coleccion` eran nombres muy genéricos | `li` ahora es `elemento`, y el parámetro de `vistas` pasó de `coleccion` a `tareas` para ser consistente con `taskService.js` | Cinco escenarios manuales correctos |
+
+**Verificación manual de `app.js`:** probamos alta válida, alta inválida, cambio de estado, filtro y eliminar. También revisamos que la consola del navegador no mostrara errores y que al hacer clic fuera de un botón no pasara nada. Esta evidencia es manual y no la cubre Vitest.
+
+### Cambios que consideramos y descartamos
+
+- **Separar el `submit` en `registrarTarea()` y `limpiarFormulario()`:** el manejador tiene unas diez líneas y se lee en orden, así que no justificaba agregar dos funciones. Además, esas funciones modifican variables del módulo y dependen del DOM, por lo que no se podrían probar con pruebas unitarias.
+- **Extraer `limpiarMensaje()`:** la línea solo se repite dos veces y la función no se leería mejor que la asignación directa.
+- **Convertir `"todas"`, `"pendientes"` y `"terminadas"` en constantes:** esos valores también están en `index.html` (`data-filter`), así que una constante en JavaScript no quitaría la duplicación.
+- **Tocar `agregarTarea`, `eliminarTarea`, `vistas`, `crearItem` y `render()`:** cada una tiene una sola responsabilidad y su intención se entiende bien.
+
+### Conclusión
+
+Refactorizamos solo lo que pudimos justificar. Los cambios de `taskService.js` quedaron protegidos por la suite de pruebas y los de `app.js` por la verificación manual de los escenarios de integración. El comportamiento de la aplicación se conservó.
     
 
 ## Pair Programming
@@ -151,6 +213,8 @@ para asegurarnos que la prueba era correcta.
 **Roles mision 7:** Driver: Thalia· Navigator: Sugey
 **Roles mision 8:** Driver: Sugey · Navigator: Thalia
 **Roles mision 9:** Driver: Sugey · Navigator: Thalia
+**Roles mision 10:** Driver: Thalia· Navigator: Sugey
+
 
 ## Incidencias------------------------------
 ## Nota sobre la numeración de Pull Requests

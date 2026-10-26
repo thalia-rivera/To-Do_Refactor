@@ -1,14 +1,9 @@
 /*
  * TODO REFACTOR LAB · LÓGICA DE DOMINIO
- *
- * Completa estas funciones misión por misión. Favorece funciones que reciben
- * datos y devuelven datos, sin acceder al DOM. Ejecuta la suite después de
- * cada cambio.
  */
 
 // MISIÓN 2
 export function crearTarea(id, titulo) {
-  // TODO: devolver { id, titulo, completada: false }
   return { id, titulo, completada: false };
 }
 
@@ -19,41 +14,38 @@ export function agregarTarea(tareas, nuevaTarea) {
 
 // MISIÓN 4
 export function buscarTarea(tareas, id) {
-  // TODO: usar find(). Un id inexistente debe producir undefined.
-  return tareas.find(t => t.id === id);
+  return tareas.find(tarea => tarea.id === id);
 }
 
 // MISIÓN 5
 export function obtenerPendientes(tareas) {
-  return tareas.filter(t => !t.completada);
+  return tareas.filter(tarea => !tarea.completada);
 }
 
 export function obtenerTerminadas(tareas) {
-  return tareas.filter(t => t.completada);
-}                                                                
+  return tareas.filter(tarea => tarea.completada);
+}    
+
 // MISIÓN 6
 export function cambiarEstado(tareas, id) {
-  // TODO: usar map() + spread. No mutar el objeto original.
- return tareas.map(tarea => { 
+  return tareas.map(tarea => {
     if (tarea.id !== id) return tarea;
-  return { ...tarea, completada: !tarea.completada };
-});
-}
+    return { ...tarea, completada: !tarea.completada };
+  });
 
+}
 
 // MISIÓN 7
 export function eliminarTarea(tareas, id) {
-  // TODO: conservar todos excepto el id indicado.
-  return tareas.filter(t => t.id !== id);
+  return tareas.filter(tarea => tarea.id !== id);
 }
 
 
 // MISIÓN 8
 export function obtenerResumen(tareas) {
-  const terminadas = tareas.filter(t => t.completada).length;
   return {
     total: tareas.length,
-    pendientes: tareas.length - terminadas,
-    terminadas
+    pendientes: obtenerPendientes(tareas).length,
+    terminadas: obtenerTerminadas(tareas).length
   };
 }
