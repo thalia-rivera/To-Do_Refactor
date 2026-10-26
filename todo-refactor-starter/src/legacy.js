@@ -1,9 +1,5 @@
 /*
  * MISIÓN 0 · CÓDIGO LEGACY PARA ANALIZAR
- *
- * Este ejemplo funciona, pero representa las tareas como strings y mezcla
- * datos con manipulación del DOM. NO lo refactorices todavía: primero explica
- * qué responsabilidades están mezcladas y qué comportamientos deben conservarse.
  */
 
 let tareas = [

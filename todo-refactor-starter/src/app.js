@@ -1,8 +1,7 @@
 /*
- * MISIÓN 9 · ADAPTADOR DE INTERFAZ
- *
- * Este archivo solo lee eventos, delega las reglas a taskService.js
- * y dibuja el resultado en el DOM. No contiene reglas de negocio.
+ *  MISIÓN 9 · ADAPTADOR DE INTERFAZ
+ * Lee los eventos del DOM, llama a las funciones de taskService.js
+ * y dibuja el resultado con render().
  */
 
 import {
@@ -15,12 +14,12 @@ import {
   obtenerResumen
 } from "./taskService.js";
 
-const form = document.querySelector("#task-form");
-const input = document.querySelector("#task-input");
-const list = document.querySelector("#task-list");
-const message = document.querySelector("#message");
-const summary = document.querySelector("#summary");
-const filterButtons = [...document.querySelectorAll("[data-filter]")];
+const formulario = document.querySelector("#task-form");
+const campoTitulo = document.querySelector("#task-input");
+const lista = document.querySelector("#task-list");
+const mensaje = document.querySelector("#message");
+const resumen = document.querySelector("#summary");
+const botonesFiltro = [...document.querySelectorAll("[data-filter]")];
 
 // Estado de la aplicación
 let tareas = [
@@ -33,15 +32,15 @@ let filtro = "todas";
 
 // Cada filtro se traduce a una función de dominio
 const vistas = {
-  todas: (coleccion) => coleccion,
+  todas: (tareas) => tareas,
   pendientes: obtenerPendientes,
   terminadas: obtenerTerminadas
 };
 
 function crearItem(tarea) {
-  const li = document.createElement("li");
-  li.className = "task";
-  li.classList.toggle("done", tarea.completada);
+  const elemento = document.createElement("li");
+  elemento.className = "task";
+  elemento.classList.toggle("done", tarea.completada);
 
   const titulo = document.createElement("span");
   titulo.className = "title";
@@ -59,52 +58,54 @@ function crearItem(tarea) {
   botonEliminar.textContent = "Eliminar";
 
   acciones.append(botonEstado, botonEliminar);
-  li.append(titulo, acciones);
-  return li;
+  elemento.append(titulo, acciones);
+  return elemento;
 }
 
 function render() {
   const visibles = vistas[filtro](tareas);
 
-  list.innerHTML = "";
-  visibles.forEach((tarea) => list.appendChild(crearItem(tarea)));
+  lista.innerHTML = "";
+  visibles.forEach((tarea) => lista.appendChild(crearItem(tarea)));
 
   const { total, pendientes, terminadas } = obtenerResumen(tareas);
-  summary.textContent = `Total: ${total} · Pendientes: ${pendientes} · Terminadas: ${terminadas}`;
+  resumen.textContent = `Total: ${total} · Pendientes: ${pendientes} · Terminadas: ${terminadas}`;
 }
 
-form.addEventListener("submit", (event) => {
+formulario.addEventListener("submit", (event) => {
   event.preventDefault();
-  const titulo = input.value.trim();
+  const titulo = campoTitulo.value.trim();
   if (!titulo) {
-    message.textContent = "Escribe un título antes de agregar.";
+    mensaje.textContent = "Escribe un título antes de agregar.";
     return;
   }
   tareas = agregarTarea(tareas, crearTarea(siguienteId, titulo));
   siguienteId += 1;
-  input.value = "";
-  message.textContent = "";
+  campoTitulo.value = "";
+  mensaje.textContent = "";
   render();
 });
 
-list.addEventListener("click", (event) => {
-  const { toggle, delete: eliminar } = event.target.dataset;
+lista.addEventListener("click", (event) => {
+  const { toggle: idParaCambiar, delete: idParaEliminar } = event.target.dataset;
 
-  if (toggle !== undefined) {
-    tareas = cambiarEstado(tareas, Number(toggle));
-  } else if (eliminar !== undefined) {
-    tareas = eliminarTarea(tareas, Number(eliminar));
+  if (idParaCambiar !== undefined) {
+    tareas = cambiarEstado(tareas, Number(idParaCambiar));
+  } else if (idParaEliminar !== undefined) {
+    tareas = eliminarTarea(tareas, Number(idParaEliminar));
   } else {
     return;
   }
   render();
 });
 
-filterButtons.forEach((button) =>
-  button.addEventListener("click", () => {
-    filtro = button.dataset.filter;
-    filterButtons.forEach((b) => b.classList.toggle("active", b === button));
-    message.textContent = "";
+botonesFiltro.forEach((botonPulsado) =>
+  botonPulsado.addEventListener("click", () => {
+    filtro = botonPulsado.dataset.filter;
+    botonesFiltro.forEach((boton) =>
+      boton.classList.toggle("active", boton === botonPulsado)
+    );
+    mensaje.textContent = "";
     render();
   })
 );
