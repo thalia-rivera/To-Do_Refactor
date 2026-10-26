@@ -123,7 +123,7 @@ Documenta al menos una iteración:
 - **REFACTOR:** ¿qué mejoraste sin cambiar el comportamiento?
     La sintaxis ya que el nombre de la variable y el valor esperado era el mismo asi que solo lo dejamos indicado una vez, no era necesario duplicarlo. 
 
-     Misión 3: agregarTarea
+     MISIÓN 03
 
 - **RED:** ¿qué prueba escribiste y por qué falló?
 Escribimos tres pruebas para `agregarTarea`: que la nueva tarea quede al final, que la colección tenga un elemento más y que el array original no se modifique. Fallaron porque la función aún tenía el `throw new Error("Misión 3 pendiente")`, que interrumpió la ejecución antes de que la prueba pudiera comparar el resultado.
@@ -140,7 +140,7 @@ Reemplazamos el `throw` por un spread que copia la colección y agrega la tarea 
 - **REFACTOR:** ¿qué mejoraste sin cambiar el comportamiento?
 No hizo falta refactorizar: la función tiene una sola línea y nombres claros. Elegimos spread en lugar de `push` para no mutar el array recibido, y la prueba "no modifica el array original" protege esa decisión. Volvimos a correr las pruebas para confirmarlo.
 
-Misión 5: obtenerPendientes y obtenerTerminadas
+      MISIÓN 04
 
 - **RED:** ¿qué prueba escribiste y por qué falló?
 Escribimos pruebas para ambas funciones con tres casos: colección mixta, ninguna coincidencia y colección vacía. Fallaron porque las funciones todavía lanzaban un `throw new Error`, así que la prueba nunca pudo comparar el resultado.
@@ -158,7 +158,7 @@ Reemplazamos los `throw` por un `filter()` en cada función:
 No cambiamos código, pero revisamos si `filter()` era la herramienta correcta. Lo es, porque selecciona un subconjunto sin transformar los elementos, y cuando no hay coincidencias devuelve `[]` y no `undefined`. Volvimos a correr las pruebas para confirmarlo.
 
 
-    MISIÓN 07
+      MISIÓN 07
 - **RED:** ¿qué prueba escribiste y por qué falló?
 Escribimos pruebas para `eliminarTarea`, entre ellas "elimina la tarea con un id existente", que espera que `eliminarTarea(tareas, 2)` devuelva solo las tareas 1 y 3. Falló porque la función aún contenía el throw new Error, que interrumpió la ejecución antes de que la prueba pudiera comparar el resultado.
 
@@ -174,7 +174,7 @@ Resultado: todas las pruebas en verde.
 Para esta mision consideramos que no hacia falta refcatorizar algo, asi que lo dejamos asi, pero volvimos a probar 
 para asegurarnos que la prueba era correcta.
 
-Misión 8: obtenerResumen
+      MISIÓN 08
 
 - **RED:** ¿qué prueba escribiste y por qué falló?
 Escribimos pruebas para `obtenerResumen` con una colección mixta, una vacía (que debe devolver ceros), una con todas pendientes y una que verifica que `total = pendientes + terminadas`. Fallaron porque la función aún tenía el `throw new Error("Misión 8 pendiente")`.
@@ -195,8 +195,7 @@ Implementamos el resumen reutilizando funciones ya probadas:
 - **REFACTOR:** ¿qué mejoraste sin cambiar el comportamiento?
 Comparamos esta versión con una que calcula todo en un solo `filter()`. Nos quedamos con la que reutiliza funciones porque comunica mejor la intención y la regla de "pendiente" vive en un solo lugar. Hace más trabajo, pero con una lista de tareas el costo es insignificante.
 
-    MISION 09
-## Misión 10: Refactor final protegido por pruebas
+      MISIÓN 10
 
 Antes de empezar el refactor corrimos `npm test` y todas las pruebas estaban en verde. Los cambios de `taskService.js` los comprobamos con la suite después de cada modificación. Los de `app.js` los comprobamos a mano, porque la interfaz no está cubierta por Vitest.
 
@@ -211,7 +210,6 @@ Antes de empezar el refactor corrimos `npm test` y todas las pruebas estaban en 
 
 El cambio más importante fue el de `obtenerResumen`:
 
-```js
 // Antes
 export function obtenerResumen(tareas) {
   const terminadas = tareas.filter(t => t.completada).length;
@@ -230,11 +228,10 @@ export function obtenerResumen(tareas) {
     terminadas: obtenerTerminadas(tareas).length
   };
 }
-```
 
 Con este cambio la regla de qué es una tarea terminada queda escrita en un solo lugar, y reutilizamos funciones que ya tienen sus propias pruebas.
 
-### Cambios en `app.js`
+      CAMBIOS EN APP.JS
 
 | Problema que encontramos | Qué cambiamos | Evidencia |
 |---|---|---|
@@ -246,14 +243,7 @@ Con este cambio la regla de qué es una tarea terminada queda escrita en un solo
 
 **Verificación manual de `app.js`:** probamos alta válida, alta inválida, cambio de estado, filtro y eliminar. También revisamos que la consola del navegador no mostrara errores y que al hacer clic fuera de un botón no pasara nada. Esta evidencia es manual y no la cubre Vitest.
 
-### Cambios que consideramos y descartamos
-
-- **Separar el `submit` en `registrarTarea()` y `limpiarFormulario()`:** el manejador tiene unas diez líneas y se lee en orden, así que no justificaba agregar dos funciones. Además, esas funciones modifican variables del módulo y dependen del DOM, por lo que no se podrían probar con pruebas unitarias.
-- **Extraer `limpiarMensaje()`:** la línea solo se repite dos veces y la función no se leería mejor que la asignación directa.
-- **Convertir `"todas"`, `"pendientes"` y `"terminadas"` en constantes:** esos valores también están en `index.html` (`data-filter`), así que una constante en JavaScript no quitaría la duplicación.
-- **Tocar `agregarTarea`, `eliminarTarea`, `vistas`, `crearItem` y `render()`:** cada una tiene una sola responsabilidad y su intención se entiende bien.
-
-### Conclusión
+      Conclusión
 
 Refactorizamos solo lo que pudimos justificar. Los cambios de `taskService.js` quedaron protegidos por la suite de pruebas y los de `app.js` por la verificación manual de los escenarios de integración. El comportamiento de la aplicación se conservó.
     
@@ -270,6 +260,7 @@ Refactorizamos solo lo que pudimos justificar. Los cambios de `taskService.js` q
 **Roles mision 8:** Driver: Sugey · Navigator: Thalia
 **Roles mision 9:** Driver: Sugey · Navigator: Thalia
 **Roles mision 10:** Driver: Thalia· Navigator: Sugey
+**Roles mision 11:** Driver: Sugey · Navigator: Thalia
 
 
 ## Incidencias------------------------------
@@ -310,3 +301,12 @@ el merge llevó a `main` todo el historial de las Misiones 0 a 3.
 - Por eso el PR de la Misión 4 es el #6, y así sucesivamente: el desfase es
   consecuencia del PR #4 incorrecto y no afecta el historial de commits.
 
+### Conclusión Final
+
+Este laboratorio nos mostró que un código que funciona no es lo mismo que un código fácil de mantener. Partimos de una aplicación sencilla, con tareas guardadas como simples textos y con la lógica mezclada con la interfaz, y nos dimos cuenta de que cualquier cambio, por pequeño que pareciera, podría ser riesgoso. Convertir esas tareas en objetos con identidad y estado fue el primer paso para que el modelo pudiera crecer sin improvisar.
+
+También aprendimos a trabajar en sentido contrario a lo que solemos hacer: escribir primero la prueba y verla fallar antes de programar la solución. Al principio parecía un paso innecesario, pero ver el fallo en rojo nos confirmó que la prueba realmente detectaba el comportamiento que queríamos proteger, y verla en verde después nos dio una confianza que antes no teníamos. Además, separar las reglas de la aplicación del código que dibuja la pantalla hizo que cada función fuera pequeña, aislada y fácil de probar sin abrir el navegador.
+
+Elegir la herramienta adecuada para cada operación sobre colecciones nos ayudó a que el código comunicara su intención: buscar un elemento, seleccionar un subconjunto o producir una colección nueva sin tocar la original. Entendimos que no modificar los datos recibidos evita efectos secundarios difíciles de identificar, y que una prueba que verifica que el original no cambió protege una decisión de diseño que de otro modo pasaría desapercibida.
+
+Adicionalmente nos gustaria comentar que mejoramos nuestra tecnica de trabajo en Git y GitHub. Al realizar estas practicas estamos aprendiendo mucho de esta herramienta, decidimos trabajar en una rama de develop para cuidar que las versiones y lo que modificamos no afecte a la rama principal (main) en caso de tener un bug o un error no detectado y para mejorar la limpieza en la construccion del codigo, tuvimos algunas incidencias que nos ayudaron a aprender a resolver ciertos errores y fue muy enriquezedor porque trabajar en un repositorio remoto ahora es mas sencillo que al inicio.
