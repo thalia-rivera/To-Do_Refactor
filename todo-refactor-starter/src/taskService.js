@@ -49,3 +49,9 @@ export function obtenerResumen(tareas) {
     terminadas: obtenerTerminadas(tareas).length
   };
 }
+
+// MISIÓN 11 (opción C)
+export function obtenerPorcentajeAvance(tareas) {
+  if (tareas.length === 0) return 0;
+  return Math.round((obtenerTerminadas(tareas).length / tareas.length) * 100);
+}

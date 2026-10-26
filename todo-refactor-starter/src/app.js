@@ -11,7 +11,8 @@ import {
   eliminarTarea,
   obtenerPendientes,
   obtenerTerminadas,
-  obtenerResumen
+  obtenerResumen,
+  obtenerPorcentajeAvance
 } from "./taskService.js";
 
 const formulario = document.querySelector("#task-form");
@@ -69,8 +70,7 @@ function render() {
   visibles.forEach((tarea) => lista.appendChild(crearItem(tarea)));
 
   const { total, pendientes, terminadas } = obtenerResumen(tareas);
-  resumen.textContent = `Total: ${total} · Pendientes: ${pendientes} · Terminadas: ${terminadas}`;
-}
+resumen.textContent = `Total: ${total} · Pendientes: ${pendientes} · Terminadas: ${terminadas} · Avance: ${obtenerPorcentajeAvance(tareas)}%`;}
 
 formulario.addEventListener("submit", (event) => {
   event.preventDefault();

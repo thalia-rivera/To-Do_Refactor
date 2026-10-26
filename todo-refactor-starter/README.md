@@ -123,6 +123,41 @@ Documenta al menos una iteración:
 - **REFACTOR:** ¿qué mejoraste sin cambiar el comportamiento?
     La sintaxis ya que el nombre de la variable y el valor esperado era el mismo asi que solo lo dejamos indicado una vez, no era necesario duplicarlo. 
 
+     Misión 3: agregarTarea
+
+- **RED:** ¿qué prueba escribiste y por qué falló?
+Escribimos tres pruebas para `agregarTarea`: que la nueva tarea quede al final, que la colección tenga un elemento más y que el array original no se modifique. Fallaron porque la función aún tenía el `throw new Error("Misión 3 pendiente")`, que interrumpió la ejecución antes de que la prueba pudiera comparar el resultado.
+
+- **GREEN:** ¿cuál fue el cambio mínimo que la hizo pasar?
+Reemplazamos el `throw` por un spread que copia la colección y agrega la tarea nueva:
+
+      export function agregarTarea(tareas, nuevaTarea) {
+        return [...tareas, nuevaTarea];
+      }
+
+  Resultado: todas las pruebas en verde.
+
+- **REFACTOR:** ¿qué mejoraste sin cambiar el comportamiento?
+No hizo falta refactorizar: la función tiene una sola línea y nombres claros. Elegimos spread en lugar de `push` para no mutar el array recibido, y la prueba "no modifica el array original" protege esa decisión. Volvimos a correr las pruebas para confirmarlo.
+
+Misión 5: obtenerPendientes y obtenerTerminadas
+
+- **RED:** ¿qué prueba escribiste y por qué falló?
+Escribimos pruebas para ambas funciones con tres casos: colección mixta, ninguna coincidencia y colección vacía. Fallaron porque las funciones todavía lanzaban un `throw new Error`, así que la prueba nunca pudo comparar el resultado.
+
+- **GREEN:** ¿cuál fue el cambio mínimo que la hizo pasar?
+Reemplazamos los `throw` por un `filter()` en cada función:
+
+      export function obtenerPendientes(tareas) {
+        return tareas.filter(t => !t.completada);
+      }
+
+  `obtenerTerminadas` es igual, sin la negación. Resultado: todas las pruebas en verde.
+
+- **REFACTOR:** ¿qué mejoraste sin cambiar el comportamiento?
+No cambiamos código, pero revisamos si `filter()` era la herramienta correcta. Lo es, porque selecciona un subconjunto sin transformar los elementos, y cuando no hay coincidencias devuelve `[]` y no `undefined`. Volvimos a correr las pruebas para confirmarlo.
+
+
     MISIÓN 07
 - **RED:** ¿qué prueba escribiste y por qué falló?
 Escribimos pruebas para `eliminarTarea`, entre ellas "elimina la tarea con un id existente", que espera que `eliminarTarea(tareas, 2)` devuelva solo las tareas 1 y 3. Falló porque la función aún contenía el throw new Error, que interrumpió la ejecución antes de que la prueba pudiera comparar el resultado.
@@ -138,6 +173,27 @@ Resultado: todas las pruebas en verde.
  **REFACTOR:** ¿qué mejoraste sin cambiar el comportamiento?
 Para esta mision consideramos que no hacia falta refcatorizar algo, asi que lo dejamos asi, pero volvimos a probar 
 para asegurarnos que la prueba era correcta.
+
+Misión 8: obtenerResumen
+
+- **RED:** ¿qué prueba escribiste y por qué falló?
+Escribimos pruebas para `obtenerResumen` con una colección mixta, una vacía (que debe devolver ceros), una con todas pendientes y una que verifica que `total = pendientes + terminadas`. Fallaron porque la función aún tenía el `throw new Error("Misión 8 pendiente")`.
+
+- **GREEN:** ¿cuál fue el cambio mínimo que la hizo pasar?
+Implementamos el resumen reutilizando funciones ya probadas:
+
+      export function obtenerResumen(tareas) {
+        return {
+          total: tareas.length,
+          pendientes: obtenerPendientes(tareas).length,
+          terminadas: obtenerTerminadas(tareas).length
+        };
+      }
+
+  Resultado: todas las pruebas en verde.
+
+- **REFACTOR:** ¿qué mejoraste sin cambiar el comportamiento?
+Comparamos esta versión con una que calcula todo en un solo `filter()`. Nos quedamos con la que reutiliza funciones porque comunica mejor la intención y la regla de "pendiente" vive en un solo lugar. Hace más trabajo, pero con una lista de tareas el costo es insignificante.
 
     MISION 09
 ## Misión 10: Refactor final protegido por pruebas
