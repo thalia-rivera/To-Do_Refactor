@@ -7,7 +7,8 @@ import {
   obtenerTerminadas,
   cambiarEstado,
   eliminarTarea,
-  obtenerResumen
+  obtenerResumen,
+  obtenerPorcentajeAvance
 } from "../src/taskService.js";
 
 /*
@@ -336,8 +337,69 @@ describe("obtenerResumen", () => {
   });
 });
 
-// Los imports anteriores quedan preparados para que construyas la suite de forma incremental.
-void buscarTarea;                                                                                                      
-void cambiarEstado;
-void eliminarTarea;
+// MISIÓN 11 (opción C): porcentaje de avance
+describe("obtenerPorcentajeAvance", () => {
+  it("devuelve 0 con una colección vacía", () => {
+    // Arrange
+    const tareas = [];
+
+    // Act
+    const resultado = obtenerPorcentajeAvance(tareas);
+
+    // Assert
+    expect(resultado).toBe(0);
+  });
+
+  it("devuelve 50 si la mitad está terminada", () => {
+    // Arrange
+    const tareas = [
+      { id: 1, titulo: "A", completada: true },
+      { id: 2, titulo: "B", completada: false }
+    ];
+
+    // Act
+    const resultado = obtenerPorcentajeAvance(tareas);
+
+    // Assert
+    expect(resultado).toBe(50);
+  });
+
+  it("devuelve 100 si todas están terminadas", () => {
+    // Arrange
+    const tareas = [{ id: 1, titulo: "A", completada: true }];
+
+    // Act
+    const resultado = obtenerPorcentajeAvance(tareas);
+
+    // Assert
+    expect(resultado).toBe(100);
+  });
+
+  it("devuelve 0 si ninguna está terminada", () => {
+    // Arrange
+    const tareas = [{ id: 1, titulo: "A", completada: false }];
+
+    // Act
+    const resultado = obtenerPorcentajeAvance(tareas);
+
+    // Assert
+    expect(resultado).toBe(0);
+  });
+
+  it("redondea al entero más cercano (1 de 3 = 33)", () => {
+    // Arrange
+    const tareas = [
+      { id: 1, titulo: "A", completada: true },
+      { id: 2, titulo: "B", completada: false },
+      { id: 3, titulo: "C", completada: false }
+    ];
+
+    // Act
+    const resultado = obtenerPorcentajeAvance(tareas);
+
+    // Assert
+    expect(resultado).toBe(33);
+  });
+});
+
 
