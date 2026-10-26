@@ -270,7 +270,7 @@ Refactorizamos solo lo que pudimos justificar. Los cambios de `taskService.js` q
 **Roles mision 8:** Driver: Sugey · Navigator: Thalia
 **Roles mision 9:** Driver: Sugey · Navigator: Thalia
 **Roles mision 10:** Driver: Thalia· Navigator: Sugey
-
+**Roles misión 11:** Driver: Sugey · Navigator: Thalia
 
 ## Incidencias------------------------------
 ## Nota sobre la numeración de Pull Requests
